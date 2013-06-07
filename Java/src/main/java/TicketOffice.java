@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class TicketOffice {
 
@@ -7,7 +8,7 @@ public class TicketOffice {
     }
 
     public Reservation makeReservation(ReservationRequest request) {
-		ArrayList<Seat> seats = new ArrayList<Seat>() {{
+		List<Seat> seats = new ArrayList<Seat>() {{
 			add(new Seat("A", 0));
 			add(new Seat(null, 0));
 			add(new Seat(null, 0));
