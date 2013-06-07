@@ -1,6 +1,6 @@
 public class TicketOffice {
-    
-    public TicketOffice(String trainDataService, String bookingReferenceService) {
+
+    public TicketOffice(TrainDataService trainDataService, BookingReferenceService bookingReferenceService) {
 		//TODO: implement this code!
     }
 
