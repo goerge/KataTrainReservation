@@ -14,31 +14,34 @@ import org.mockito.MockitoAnnotations;
 
 public class TicketOfficeTest {
 
-    private TicketOffice office;
-	@Mock TrainDataService trainDataServiceStub;
-	@Mock BookingReferenceService bookingReferenceServiceStub;
+	private TicketOffice office;
+	@Mock
+	TrainDataService trainDataServiceStub;
+	@Mock
+	BookingReferenceService bookingReferenceServiceStub;
 
-    @Before
-    public void setUpTicketOffice() {
-    	MockitoAnnotations.initMocks(this);
-    	office = new TicketOffice(trainDataServiceStub, bookingReferenceServiceStub);
-    }
+	@Before
+	public void setUpTicketOffice() {
+		MockitoAnnotations.initMocks(this);
+		office = new TicketOffice(trainDataServiceStub, bookingReferenceServiceStub);
+	}
 
-    @Ignore
+	@Ignore
 	@Test
-    public void reserveSeats() {
-        ReservationRequest request = new ReservationRequest("express_2000", 4);
+	public void reserveSeats() {
+		ReservationRequest request = new ReservationRequest("express_2000", 4);
 
-        Reservation reservation = office.makeReservation(request);
+		Reservation reservation = office.makeReservation(request);
 
-        assertEquals(4, reservation.seats.size());
-        assertEquals("A", reservation.seats.get(0).coach);
-        assertEquals("75bcd15", reservation.bookingId);
-    }
+		assertEquals(4, reservation.seats.size());
+		assertEquals("A", reservation.seats.get(0).coach);
+		assertEquals("75bcd15", reservation.bookingId);
+	}
 
 	@Test
 	public void reservationContainsIdFromBookingService() throws Exception {
 		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1");
+		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>() {{add(new Seat(null, 0));}});
 		Reservation reservation = office.makeReservation(new ReservationRequest("train", 1));
 		assertThat(reservation.bookingId, is("1"));
 	}
@@ -46,12 +49,14 @@ public class TicketOfficeTest {
 	@Test
 	public void twoReservationsHaveConsecutiveBookingIds() throws Exception {
 		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1", "2");
+		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>() {{add(new Seat(null, 0));}});
 		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is("1"));
 		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is("2"));
 	}
 
 	@Test
 	public void reservationForTrainWithoutSeats() throws Exception {
+		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1", "2");
 		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>());
 		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is(nullValue()));
 	}
