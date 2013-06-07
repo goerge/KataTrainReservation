@@ -4,6 +4,10 @@ import java.util.List;
 
 public class TrainDataService {
 
+	public TrainDataService(String url) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String jsonDataForTrain(String trainId) {
 		return "{\"seats\": [{\"coach\": \"A\", \"seat_number\": \"1\", \"coach\": \"A\", \"seat_number\": \"2\"}]}";
 	}

@@ -2,13 +2,23 @@ import java.util.List;
 
 public class TicketOffice {
 
-    public TicketOffice(String trainDataService, String bookingReferenceService) {
-		//TODO: implement this code!
-    }
+	private final TrainDataService trainDataService;
+	private final BookingService bookingService;
 
-    public Reservation makeReservation(ReservationRequest request) {
-		List<Seat> seats = new TrainDataService().dataForTrain(request.trainId);
-		return new Reservation(null, seats, new BookingService(null).createBookingReference());
-    }
+	public TicketOffice(String trainDataService, String bookingReferenceService) {
+		this(new TrainDataService(trainDataService), new BookingService(bookingReferenceService));
+	}
+
+	public TicketOffice(TrainDataService trainDataService,
+			BookingService bookingService) {
+		this.trainDataService = trainDataService;
+		this.bookingService = bookingService;
+	}
+
+	public Reservation makeReservation(ReservationRequest request) {
+		List<Seat> seats = trainDataService.dataForTrain(request.trainId);
+		return new Reservation(null, seats,
+				bookingService.createBookingReference());
+	}
 
 }

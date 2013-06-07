@@ -10,12 +10,12 @@ public class TrainDataServiceTest {
 	public void jsonTrainDataService() {
 		assertEquals(
 				"{\"seats\": [{\"coach\": \"A\", \"seat_number\": \"1\", \"coach\": \"A\", \"seat_number\": \"2\"}]}",
-				new TrainDataService().jsonDataForTrain("express_2000"));
+				new TrainDataService(null).jsonDataForTrain("express_2000"));
 	}
 
 	@Test
 	public void jsonIsConvertedToPOJOs() throws Exception {
-		List<Seat> seats = new TrainDataService().dataForTrain("");
+		List<Seat> seats = new TrainDataService(null).dataForTrain("");
 		assertEquals(4, seats.size());
 	}
 }
