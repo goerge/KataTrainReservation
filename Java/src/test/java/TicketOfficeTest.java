@@ -39,7 +39,7 @@ public class TicketOfficeTest {
 	}
 
 	@Test
-	public void reservationContainsIdFromBookingService() throws Exception {
+	public void reservationContainsIdFromBookingService() {
 		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1");
 		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>() {{add(new Seat(null, 0));}});
 		Reservation reservation = office.makeReservation(new ReservationRequest("train", 1));
@@ -47,7 +47,7 @@ public class TicketOfficeTest {
 	}
 
 	@Test
-	public void twoReservationsHaveConsecutiveBookingIds() throws Exception {
+	public void twoReservationsHaveConsecutiveBookingIds() {
 		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1", "2");
 		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>() {{add(new Seat(null, 0));}});
 		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is("1"));
@@ -55,7 +55,7 @@ public class TicketOfficeTest {
 	}
 
 	@Test
-	public void reservationForTrainWithoutSeats() throws Exception {
+	public void reservationForTrainWithoutSeats()  {
 		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1", "2");
 		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>());
 		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is(nullValue()));
