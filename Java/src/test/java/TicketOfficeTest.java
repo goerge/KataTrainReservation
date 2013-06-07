@@ -1,7 +1,10 @@
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -12,7 +15,7 @@ import org.mockito.MockitoAnnotations;
 public class TicketOfficeTest {
 
     private TicketOffice office;
-	private TrainDataService trainDataServiceStub;
+	@Mock TrainDataService trainDataServiceStub;
 	@Mock BookingReferenceService bookingReferenceServiceStub;
 
     @Before
@@ -45,5 +48,11 @@ public class TicketOfficeTest {
 		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1", "2");
 		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is("1"));
 		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is("2"));
+	}
+
+	@Test
+	public void reservationForTrainWithoutSeats() throws Exception {
+		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>());
+		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is(nullValue()));
 	}
 }
