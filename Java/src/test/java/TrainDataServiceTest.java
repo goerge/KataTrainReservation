@@ -1,14 +1,21 @@
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Test;
 
 public class TrainDataServiceTest {
 
 	@Test
-	public void trainDataService() {
+	public void jsonTrainDataService() {
 		assertEquals(
 				"{\"seats\": [{\"coach\": \"A\", \"seat_number\": \"1\", \"coach\": \"A\", \"seat_number\": \"2\"}]}",
-				new TrainDataService().dataForTrain("express_2000"));
+				new TrainDataService().jsonDataForTrain("express_2000"));
 	}
 
+	@Test
+	public void jsonIsConvertedToPOJOs() throws Exception {
+		List<Seat> seats = new TrainDataService().dataForTrain("");
+		assertEquals(4, seats.size());
+	}
 }
