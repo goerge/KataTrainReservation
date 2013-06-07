@@ -39,4 +39,11 @@ public class TicketOfficeTest {
 		Reservation reservation = office.makeReservation(new ReservationRequest("train", 1));
 		assertThat(reservation.bookingId, is("1"));
 	}
+
+	@Test
+	public void twoReservationsHaveConsecutiveBookingIds() throws Exception {
+		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1", "2");
+		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is("1"));
+		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is("2"));
+	}
 }
