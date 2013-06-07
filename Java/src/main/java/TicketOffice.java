@@ -1,12 +1,13 @@
 public class TicketOffice {
 
-    public TicketOffice(TrainDataService trainDataService, BookingReferenceService bookingReferenceService) {
-		//TODO: implement this code!
+    private final BookingReferenceService bookingReferenceService;
+
+	public TicketOffice(TrainDataService trainDataService, BookingReferenceService bookingReferenceService) {
+		this.bookingReferenceService = bookingReferenceService;
     }
 
     public Reservation makeReservation(ReservationRequest request) {
-		//TODO: implement this code!
-		return null;
+		return new Reservation(null, null, bookingReferenceService.bookingReference());
     }
 
 }
