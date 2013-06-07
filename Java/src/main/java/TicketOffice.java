@@ -17,7 +17,7 @@ public class TicketOffice {
 
 	public Reservation makeReservation(ReservationRequest request) {
 		List<Seat> seats = trainDataService.dataForTrain(request.trainId);
-		return new Reservation(null, seats,
+		return new Reservation(request.trainId, seats,
 				bookingService.createBookingReference());
 	}
 

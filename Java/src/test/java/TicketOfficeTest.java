@@ -16,6 +16,7 @@ public class TicketOfficeTest {
         assertEquals(4, reservation.seats.size());
         assertEquals("A", reservation.seats.get(0).coach);
         assertEquals("75bcd15", reservation.bookingId);
+        assertEquals("express_2000", reservation.trainId);
     }
 
     @Test
