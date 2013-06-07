@@ -39,9 +39,13 @@ public class TicketOfficeTest {
 	}
 
 	@Test
-	public void reservationContainsIdFromBookingService() {
+	public void successfulReservationContainsBookingId() {
 		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1");
-		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>() {{add(new Seat(null, 0));}});
+		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>() {
+			{
+				add(new Seat(null, 0));
+			}
+		});
 		Reservation reservation = office.makeReservation(new ReservationRequest("train", 1));
 		assertThat(reservation.bookingId, is("1"));
 	}
@@ -49,15 +53,43 @@ public class TicketOfficeTest {
 	@Test
 	public void twoReservationsHaveConsecutiveBookingIds() {
 		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1", "2");
-		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>() {{add(new Seat(null, 0));}});
+		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>() {
+			{
+				add(new Seat(null, 0));
+			}
+		});
 		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is("1"));
 		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is("2"));
 	}
 
 	@Test
-	public void reservationForTrainWithoutSeats()  {
+	public void reservationForTrainWithoutSeats() {
 		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1", "2");
 		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>());
 		assertThat(office.makeReservation(new ReservationRequest("train", 1)).bookingId, is(nullValue()));
 	}
+
+	@Test
+	public void reservationIsOnlySuccesfulIfEnoughSeatsAvailableInTrain() {
+		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1");
+		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>() {
+			{
+				add(new Seat(null, 0));
+				add(new Seat(null, 1));
+			}
+		});
+		assertThat(office.makeReservation(new ReservationRequest("train", 2)).bookingId, is("1"));
+	}
+
+	@Test
+	public void reservationIsNotSuccesfulIfNotEnoughSeatsAvailableInTrain() {
+		when(bookingReferenceServiceStub.bookingReference()).thenReturn("1");
+		when(trainDataServiceStub.dataForTrain("train")).thenReturn(new ArrayList<Seat>() {
+			{
+				add(new Seat(null, 0));
+			}
+		});
+		assertThat(office.makeReservation(new ReservationRequest("train", 2)).bookingId, is(nullValue()));
+	}
+
 }

@@ -12,10 +12,9 @@ public class TicketOffice {
 
     public Reservation makeReservation(ReservationRequest request) {
     	List<Seat> dataForTrain = trainDataService.dataForTrain(request.trainId);
-		if(dataForTrain.isEmpty()) {
-			return new Reservation(request.trainId, null, null);
+		if(dataForTrain.size() >= request.seatCount) {
+			return new Reservation(null, null, bookingReferenceService.bookingReference());
 		}
-		return new Reservation(null, null, bookingReferenceService.bookingReference());
+		return new Reservation(request.trainId, null, null);
     }
-
 }
