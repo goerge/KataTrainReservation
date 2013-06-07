@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class TicketOffice {
@@ -8,12 +7,7 @@ public class TicketOffice {
     }
 
     public Reservation makeReservation(ReservationRequest request) {
-		List<Seat> seats = new ArrayList<Seat>() {{
-			add(new Seat("A", 0));
-			add(new Seat(null, 0));
-			add(new Seat(null, 0));
-			add(new Seat(null, 0));
-		}};
+		List<Seat> seats = new TrainDataService().dataForTrain(request.trainId);
 		return new Reservation(null, seats, new BookingService(null).createBookingReference());
     }
 
