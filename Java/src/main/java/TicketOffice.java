@@ -14,7 +14,7 @@ public class TicketOffice {
 			add(new Seat(null, 0));
 			add(new Seat(null, 0));
 		}};
-		return new Reservation(null, seats, "75bcd15");
+		return new Reservation(null, seats, new BookingService(null).createBookingReference());
     }
 
 }
